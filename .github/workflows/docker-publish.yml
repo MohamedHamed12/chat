@@ -30,7 +30,7 @@ jobs:
       with:
         context: .
         push: true
-        tags: ${{ secrets.DOCKERHUB_USERNAME }}/your-app-name:latest
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/chat:latest
 
     - name: Logout from DockerHub
       run: docker logout
