@@ -1,4 +1,13 @@
-// routes/messages.js
+
+
+
+
+
+const express = require('express');
+const router = express.Router();
+const messageController = require('../controllers/messageController');
+const { validateMessage } = require('../validators/messageValidation');
+
 /**
  * @swagger
  * tags:
@@ -8,43 +17,37 @@
 
 /**
  * @swagger
- * /messages:
- *   get:
- *     summary: Retrieve all messages
- *     tags: [Messages]
- *     responses:
- *       200:
- *         description: A list of messages
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Message'
- */
-
-/**
- * @swagger
- * /messages/{id}:
- *   get:
- *     summary: Retrieve a single message by ID
- *     tags: [Messages]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
+ * components:
+ *   schemas:
+ *     Message:
+ *       type: object
+ *       required:
+ *         - conversation
+ *         - sender
+ *         - content
+ *       properties:
+ *         _id:
  *           type: string
- *         description: The ID of the message to retrieve
- *     responses:
- *       200:
- *         description: A single message object
+ *           description: The message ID
+ *         conversation:
+ *           type: string
+ *           description: The conversation ID
+ *         sender:
+ *           type: string
+ *           description: The user ID of the sender
  *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Message'
- *       404:
- *         description: Message not found
+ *           type: string
+ *           description: The content of the message
+ *         timestamp:
+ *           type: string
+ *           format: date-time
+ *           description: The timestamp of the message
+ *       example:
+ *         _id: 60d0fe4f5311236168a109cd
+ *         conversation: 60d0fe4f5311236168a109cb
+ *         sender: 60d0fe4f5311236168a109ca
+ *         content: "Hello, how are you?"
+ *         timestamp: "2023-06-20T12:00:00Z"
  */
 
 /**
@@ -58,10 +61,10 @@
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/MessageInput'
+ *             $ref: '#/components/schemas/Message'
  *     responses:
  *       201:
- *         description: Created
+ *         description: Message created successfully
  *         content:
  *           application/json:
  *             schema:
@@ -69,6 +72,54 @@
  *       400:
  *         description: Bad request
  */
+router.post('/', validateMessage, messageController.createMessage);
+
+/**
+ * @swagger
+ * /messages:
+ *   get:
+ *     summary: Get all messages
+ *     tags: [Messages]
+ *     responses:
+ *       200:
+ *         description: List of all messages
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Message'
+ *       400:
+ *         description: Bad request
+ */
+router.get('/', messageController.getAllMessages);
+
+/**
+ * @swagger
+ * /messages/{id}:
+ *   get:
+ *     summary: Get a message by ID
+ *     tags: [Messages]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The message ID
+ *     responses:
+ *       200:
+ *         description: Message found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Message'
+ *       404:
+ *         description: Message not found
+ *       400:
+ *         description: Bad request
+ */
+router.get('/:id', messageController.getMessageById);
 
 /**
  * @swagger
@@ -79,28 +130,29 @@
  *     parameters:
  *       - in: path
  *         name: id
- *         required: true
  *         schema:
  *           type: string
- *         description: The ID of the message to update
+ *         required: true
+ *         description: The message ID
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/MessageInput'
+ *             $ref: '#/components/schemas/Message'
  *     responses:
  *       200:
- *         description: Updated
+ *         description: Message updated successfully
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Message'
- *       400:
- *         description: Bad request
  *       404:
  *         description: Message not found
+ *       400:
+ *         description: Bad request
  */
+router.put('/:id', validateMessage, messageController.updateMessage);
 
 /**
  * @swagger
@@ -111,41 +163,18 @@
  *     parameters:
  *       - in: path
  *         name: id
- *         required: true
  *         schema:
  *           type: string
- *         description: The ID of the message to delete
+ *         required: true
+ *         description: The message ID
  *     responses:
  *       200:
- *         description: Deleted
+ *         description: Message deleted successfully
  *       404:
  *         description: Message not found
+ *       400:
+ *         description: Bad request
  */
-const express = require('express');
-const { validateMessage } = require('../validators/messageValidation');
-
-const router = express.Router();
-const {
-    getAllMessages,
-    getMessageById,
-    createMessage,
-    updateMessage,
-    deleteMessage,
-} = require('../controllers/messages');
-
-// GET all messages
-router.get('/', getAllMessages);
-
-// GET a message by ID
-router.get('/:id', getMessageById);
-
-// POST create a new message
-router.post('/',validateMessage, createMessage);
-
-// PUT update a message by ID
-router.put('/:id',validateMessage, updateMessage);
-
-// DELETE delete a message by ID
-router.delete('/:id', deleteMessage);
+router.delete('/:id', messageController.deleteMessage);
 
 module.exports = router;

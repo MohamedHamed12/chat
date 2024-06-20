@@ -20,3 +20,17 @@ const validateConversation = (req, res, next) => {
 };
 
 module.exports = validateConversation;
+// const Joi = require('joi');
+
+// const conversationSchema = Joi.object({
+//     name: Joi.string().required(),
+//     participants: Joi.array().items(Joi.string().required())
+// });
+
+// exports.validateConversation = (req, res, next) => {
+//     const { error } = conversationSchema.validate(req.body);
+//     if (error) {
+//         return res.status(400).json({ error: error.details[0].message });
+//     }
+//     next();
+// };

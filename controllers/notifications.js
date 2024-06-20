@@ -18,16 +18,16 @@ const sendNotification = (token, payload) => {
     });
 };
 
-const token = 'client_device_token';
-const payload = {
-  notification: {
-    title: 'Hello!',
-    body: 'This is a test notification.',
-    sound: 'default'
-  },
-  data: {
-    additionalData: 'Some additional data'
-  }
-};
+// const token = 'client_device_token';
+// const payload = {
+//   notification: {
+//     title: 'Hello!',
+//     body: 'This is a test notification.',
+//     sound: 'default'
+//   },
+//   data: {
+//     additionalData: 'Some additional data'
+//   }
+// };
 
-sendNotification(token, payload);
+// sendNotification(token, payload);

@@ -2,8 +2,12 @@ const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
 const connectDB = require('./db');
+
+
 const conversationRoutes = require('./routes/conversations');
 const messageRoutes = require('./routes/messages');
+const usersRoutes =require('./routes/user');
+
 
 const app = express();
 const server = http.createServer(app);
@@ -24,6 +28,7 @@ app.get('/', (req, res) => {
 
 app.use('/conversations', conversationRoutes);
 app.use('/messages', messageRoutes);
+app.use('/users', usersRoutes);
 
 
 module.exports = { app, server };

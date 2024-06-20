@@ -1,6 +1,5 @@
 // models/Message.js
 const mongoose = require('mongoose');
-const Conversation = require('./Conversation');
 
 const MessageSchema = new mongoose.Schema({
     conversation:{type:mongoose.Schema.Types.ObjectId, ref:'Conversation' },
@@ -10,3 +9,9 @@ const MessageSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model('Message', MessageSchema);
+
+
+
+
+
+

@@ -17,16 +17,16 @@ const options = {
         //   },
           version: '1.0.0',
         },
-        servers: [
-          {
-            url: "http://localhost:8080/",
-            description: "Local server"
-          },
-          {
-            url: "<your live url here>",
-            description: "Live server"
-          },
-        ]
+        // servers: [
+        //   {
+        //     url: "http://localhost:8080/",
+        //     description: "Local server"
+        //   },
+        //   {
+        //     url: "<your live url here>",
+        //     description: "Live server"
+        //   },
+        // ]
       },
       // looks for configuration in specified directories
     //   apis: ['./router/*.js'],
